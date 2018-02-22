@@ -1,6 +1,17 @@
 import xadmin
-
+from xadmin import views
 from .models import EmailVerifyRecord,Banner
+
+
+class BaseSetting():#主题修改
+    enable_themes = True
+    use_bootswatch = True
+
+
+class GlobalSetting():
+    site_title = '慕学后台管理系统'
+    site_footer = '慕学在线网'
+    menu_style = 'accordion' #收缩导航栏
 
 
 class EmailVerifyRecordAdmin():
@@ -17,3 +28,5 @@ class BannerAdmin():
 
 xadmin.site.register(EmailVerifyRecord,EmailVerifyRecordAdmin)
 xadmin.site.register(Banner,BannerAdmin)
+xadmin.site.register(views.BaseAdminView,BaseSetting)#主题修改
+xadmin.site.register(views.CommAdminView,GlobalSetting)#标题修改

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from users.views import LoginView,RegisterView
+from users.views import LoginView,RegisterView,ActiveUserView
 from django.views.generic import TemplateView
 import xadmin
 
@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^$',TemplateView.as_view(template_name='index.html'),name='index'),
     url(r'^login/$',LoginView.as_view(),name='login'),
     url(r'^register/$',RegisterView.as_view(),name='register'),
-    url(r'^captcha/',include('captcha.urls'))
+    url(r'^captcha/',include('captcha.urls')),
+    url(r'^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name='user_active')
 ]

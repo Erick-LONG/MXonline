@@ -139,3 +139,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS=(
     os.path.join(BASE_DIR,'static'),
 )
+
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'zhangfulong1994@sina.com'
+EMAIL_HOST_PASSWORD = 'l834424581'
+EMAIL_USE_TLS=False
+EMAIL_FROM = 'zhangfulong1994@sina.com'

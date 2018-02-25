@@ -16,7 +16,10 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetUserView,ModifyPwdView
+from organization.views import OrgView
 from django.views.generic import TemplateView
+from django.views.static import serve
+from MXonline.settings import MEDIA_ROOT
 import xadmin
 
 urlpatterns = [
@@ -29,4 +32,6 @@ urlpatterns = [
     url(r'^forget/$',ForgetPwdView.as_view(),name='forget_pwd'),
     url(r'^reset/(?P<active_code>.*)/$',ResetUserView.as_view(),name='reset_pwd'),
     url(r'^modify_pwd/$',ModifyPwdView.as_view(),name='modify_pwd'),
+    url(r'^org_list/$',OrgView.as_view(),name='org_list'),
+    url(r'^media/(?P<path>.*)$',serve,{'document_root':MEDIA_ROOT}),
 ]

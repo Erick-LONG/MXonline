@@ -13,13 +13,17 @@ class City(models.Model):
         verbose_name = '城市'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.name
+
 
 class CourseOrg(models.Model):
     name = models.CharField(max_length=50,verbose_name='机构名称')
     desc = models.TextField(verbose_name= '机构描述')
+    category = models.CharField(max_length=20,choices=(('pxjg','培训机构'),('gx','高校'),('gr','个人')),verbose_name='机构类别',default='pxjg')
     click_nums = models.IntegerField(default=0,verbose_name='点击数')
     fav_nums = models.IntegerField(default=0,verbose_name='收藏数')
-    image = models.ImageField(upload_to='courses/%Y/%m', verbose_name='封面图', max_length=100)
+    image = models.ImageField(upload_to='org/%Y/%m', verbose_name='logo', max_length=100)
     address = models.CharField(max_length=150,verbose_name='机构地址')
     city = models.ForeignKey(City,verbose_name='所在区域')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
@@ -27,6 +31,9 @@ class CourseOrg(models.Model):
     class Meta:
         verbose_name = '课程机构'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Teacher(models.Model):
@@ -43,3 +50,6 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = '教师'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name

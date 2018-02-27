@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import CourseOrg,City
 from pure_pagination import PageNotAnInteger,Paginator
 from .forms import UserAskForm
+from courses.models import Course
 # Create your views here.
 
 
@@ -61,3 +62,29 @@ class AddUserAskView(View):
             return HttpResponse('{"status":"success"}',content_type='application/json')
         else:
             return HttpResponse('{"status":"fail","msg":"添加出错"}',content_type='application/json')
+
+
+class OrgHomeView(View):
+    def get(self,request,org_id):
+        current_page = 'home'
+        course_org = CourseOrg.objects.get(id = int(org_id))
+        all_course = course_org.course_set.all()[:3]
+        all_teachers = course_org.teacher_set.all()[:3]
+        return render(request,'org-detail-homepage.html',{
+            'all_course':all_course,
+            'all_teacher':all_teachers,
+            'course_org':course_org,
+            'current_page':current_page,
+        })
+
+
+class OrgCourseView(View):
+    def get(self,request,org_id):
+        current_page = 'course'
+        course_org = CourseOrg.objects.get(id = int(org_id))
+        all_course = course_org.course_set.all()
+        return render(request,'org-detail-course.html',{
+            'all_course':all_course,
+            'course_org':course_org,
+            'current_page':current_page,
+        })

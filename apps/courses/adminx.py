@@ -21,9 +21,9 @@ class VideoAdmin():
 
 
 class CourseResourceAdmin():
-    list_display = ['course', 'name','download','add_time']
+    list_display = ['course', 'name','down_load','add_time']
     search_fields = ['course', 'name']
-    list_filter = ['course','name','download','add_time']
+    list_filter = ['course','name','down_load','add_time']
 
 
 xadmin.site.register(Course,CourseAdmin)

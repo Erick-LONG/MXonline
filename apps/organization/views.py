@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import CourseOrg,City,Teacher
 from pure_pagination import PageNotAnInteger,Paginator
 from .forms import UserAskForm
+from django.db.models import Q
 from operation.models import UserFavorite
 from courses.models import Course
 # Create your views here.
@@ -14,6 +15,12 @@ class OrgView(View):
         all_orgs = CourseOrg.objects.all()
         hot_orgs = all_orgs.order_by('-click_nums')[:3]
         all_citys = City.objects.all()
+
+        # 机构搜索
+        search_kw = request.GET.get('keywords', '')
+        if search_kw:
+            all_orgs = all_orgs.filter(
+                Q(name__icontains=search_kw) | Q(desc__icontains=search_kw))
 
         #取出筛选城市
         city_id = request.GET.get('city','')
@@ -162,6 +169,15 @@ class AddFavView(View):
 class TeacherListView(View):
     def get(self,request):
         all_teachers = Teacher.objects.all()
+
+        # 机构搜索
+        search_kw = request.GET.get('keywords', '')
+        if search_kw:
+            all_teachers = all_teachers.filter(
+                Q(name__icontains=search_kw) |
+                Q(work_company__icontains=search_kw)|
+                Q(work_position__icontains=search_kw))
+
         # 排序
         sort = request.GET.get('sort', '')
         if sort:

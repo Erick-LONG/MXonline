@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse
+from django.db.models import Q
 # Create your views here.
 from .models import Course,CourseResource,Video
 from utils.mixin_util import LoginRequiredMixin
@@ -12,6 +13,13 @@ class CourseView(View):
     def get(self,request):
         all_courses = Course.objects.all().order_by('-add_time')
         hot_courses = Course.objects.all().order_by('-click_nums')[:3]
+
+        #课程搜索
+        search_kw = request.GET.get('keywords','')
+        if search_kw:
+            all_courses = all_courses.filter(
+                Q(name__icontains=search_kw)|Q(desc__icontains=search_kw)|Q(detail__icontains=search_kw))
+
         # 排序
         sort = request.GET.get('sort', '')
         if sort:

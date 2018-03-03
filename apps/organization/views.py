@@ -162,7 +162,6 @@ class AddFavView(View):
 class TeacherListView(View):
     def get(self,request):
         all_teachers = Teacher.objects.all()
-
         # 排序
         sort = request.GET.get('sort', '')
         if sort:
@@ -183,7 +182,8 @@ class TeacherListView(View):
         return render(request,'teachers-list.html',{
             'all_teachers':teachers,
             'sorted_teacher':sorted_teacher,
-            'sort':sort})
+            'sort':sort,
+        })
 
 
 class TeacherDetailView(View):

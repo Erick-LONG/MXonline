@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse
-from .models import CourseOrg,City
+from .models import CourseOrg,City,Teacher
 from pure_pagination import PageNotAnInteger,Paginator
 from .forms import UserAskForm
 from operation.models import UserFavorite
@@ -157,3 +157,30 @@ class AddFavView(View):
                 return HttpResponse('{"status":"success","msg":"已收藏"}', content_type='application/json')
             else:
                 return HttpResponse('{"status":"fail","msg":"收藏出错"}', content_type='application/json')
+
+
+class TeacherListView(View):
+    def get(self,request):
+        all_teachers = Teacher.objects.all()
+
+        # 排序
+        sort = request.GET.get('sort', '')
+        if sort:
+            if sort == 'hot':
+                all_teachers = all_teachers.order_by('-click_nums')
+
+        #讲师排行榜
+        sorted_teacher = Teacher.objects.all().order_by('-click_nums')[:3]
+
+        # 对讲师进行分页
+        try:
+            page_num = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page_num = 1
+
+        p = Paginator(all_teachers, 2, request=request)
+        teachers = p.page(page_num)
+        return render(request,'teachers-list.html',{
+            'all_teachers':teachers,
+            'sorted_teacher':sorted_teacher,
+            'sort':sort})

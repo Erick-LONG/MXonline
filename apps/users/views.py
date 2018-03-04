@@ -9,7 +9,7 @@ from utils.email_send import send_register_email
 from utils.mixin_util import LoginRequiredMixin
 # Create your views here.
 from .models import UserProfile,EmailVerifyRecord
-from .forms import LoginForm,RegisterForm,ForgetForm,ModifyPwdForm,UpLoadImgForm
+from .forms import LoginForm,RegisterForm,ForgetForm,ModifyPwdForm,UpLoadImgForm,UserInfoForm
 import json
 
 #自定义登录
@@ -138,6 +138,14 @@ class UserInfoView(LoginRequiredMixin,View):
 
     def get(self,request):
         return render(request,'usercenter-info.html',{})
+
+    def post(self,request):
+        user_info_form = UserInfoForm(request.POST,instance=request.user)
+        if user_info_form.is_valid():
+            user_info_form.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
 
 
 class UpLoadImgView(LoginRequiredMixin,View):

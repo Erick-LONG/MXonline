@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic import View
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from pure_pagination import PageNotAnInteger,Paginator
 from utils.email_send import send_register_email
 from utils.mixin_util import LoginRequiredMixin
@@ -97,6 +97,13 @@ class LoginView(View):
         else:
             return render(request, 'login.html', {'login_form':login_form})
 
+
+class LogoutView(View):
+    '''用户登出 '''
+    def get(self,request):
+        logout(request)
+        from django.core.urlresolvers import reverse
+        return HttpResponseRedirect(reverse('index'))
 
 class ForgetPwdView(View):
     def get(self,request):
@@ -262,6 +269,11 @@ class MyMessageView(LoginRequiredMixin,View):
     '''我的消息'''
     def get(self,request):
         all_message = UserMessage.objects.filter(user=request.user.id)
+        #用户进入个人消息后清空未读消息记录
+        all_unread_message = UserMessage.objects.filter(user=request.user.id,has_read=False)
+        for unread_message in all_unread_message:
+            unread_message.has_read = True
+            unread_message.save()
         # 对个人信息进行分页
         try:
             page_num = request.GET.get('page', 1)

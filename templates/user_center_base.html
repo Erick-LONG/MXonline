@@ -33,7 +33,7 @@
 					<!--登录后跳转-->
 						<div class="personal">
                             <dl class="user fr">
-                                <dd>{{ user.name }}<img class="down fr" src="/static/images/top_down.png"/></dd>
+                                <dd>{{ user.username }}<img class="down fr" src="/static/images/top_down.png"/></dd>
                                 <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                             </dl>
                             <div class="userdetail">
@@ -41,19 +41,19 @@
 	                                <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
 	                                <dd>
 	                                    <h2>{{ request.user.nick_name }}</h2>
-	                                    <p>{{ request.user.name }}</p>
+	                                    <p>{{ request.user.username }}</p>
 	                                </dd>
                                 </dl>
-                                <a href="usercenter-message.html">
-                                    <div class="msg-num"><span id="MsgNum">0</span></div>
+                                <a href="{% url 'users:mymessage' %}">
+                                    <div class="msg-num"><span id="MsgNum">{{ request.user.get_unread_nums }}</span></div>
                                 </a>
                                 <div class="btn">
 	                                <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
-	                                <a class="fr" href="/logout/">退出</a>
+	                                <a class="fr" href="{% url 'logout' %}">退出</a>
                                 </div>
                             </div>
                         </div>
-                    <a href="">
+                    <a href="{% url 'users:mymessage' %}">
                         <div class="msg-num"><span id="MsgNum">{{ request.user.get_unread_nums }}</span></div>
                     </a>
 				</div>
@@ -71,7 +71,7 @@
 
     <div class="middle">
         <div class="wp">
-            <a href="index.html"><img class="fl" src="/static/images/logo2.png"/></a>
+            <a href="{% url 'index' %}"><img class="fl" src="/static/images/logo2.png"/></a>
             <h1>我的慕学网</h1>
         </div>
     </div>
@@ -86,8 +86,8 @@
 <section>
     <div class="wp">
         <ul  class="crumbs">
-            <li><a href="index.html">首页</a>></li>
-            <li><a href="/user/home/">个人中心</a>></li>
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
             <li>个人信息</li>
         </ul>
     </div>

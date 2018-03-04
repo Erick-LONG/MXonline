@@ -17,6 +17,11 @@ class UserProfile(AbstractUser):
         verbose_name='用户信息'
         verbose_name_plural=verbose_name
 
+    def get_unread_nums(self):
+        #获取用户未读消息数量
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(user=self.id).count()
+
     def __unicode__(self):
         return self.username
 
@@ -33,6 +38,7 @@ class EmailVerifyRecord(models.Model):
 
     def __str__(self):
         return '{0}({1})'.format(self.code,self.email)
+
 
 class Banner(models.Model):
     title = models.CharField(max_length=100,verbose_name='标题')

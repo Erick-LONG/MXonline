@@ -261,7 +261,7 @@ class MyFavCourseView(LoginRequiredMixin,View):
 class MyMessageView(LoginRequiredMixin,View):
     '''我的消息'''
     def get(self,request):
-        all_message = UserMessage.objects.all()
+        all_message = UserMessage.objects.filter(user=request.user.id)
         # 对个人信息进行分页
         try:
             page_num = request.GET.get('page', 1)

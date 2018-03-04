@@ -5,15 +5,17 @@ from django.db.models import Q
 from django.views.generic import View
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
+from pure_pagination import PageNotAnInteger,Paginator
 from utils.email_send import send_register_email
 from utils.mixin_util import LoginRequiredMixin
 # Create your views here.
 from .models import UserProfile,EmailVerifyRecord
-from operation.models import UserCourse,UserFavorite
+from operation.models import UserCourse,UserFavorite,UserMessage
 from organization.models import CourseOrg,Teacher
 from courses.models import Course
 from .forms import LoginForm,RegisterForm,ForgetForm,ModifyPwdForm,UpLoadImgForm,UserInfoForm
 import json
+
 
 #自定义登录
 class CustomBackend(ModelBackend):
@@ -59,6 +61,12 @@ class RegisterView(View):
             user_profile.is_active = False
             user_profile.password = make_password(pass_word)
             user_profile.save()
+
+            #写入欢迎注册消息
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = '欢迎注册慕学在线网！！'
+            user_message.save()
 
             send_register_email(user_name,'register')
             return render(request, 'login.html')
@@ -248,3 +256,19 @@ class MyFavCourseView(LoginRequiredMixin,View):
             course = Course.objects.get(id=course_id)
             course_list.append(course)
         return render(request, 'usercenter-fav-course.html', {'course_list': course_list})
+
+
+class MyMessageView(LoginRequiredMixin,View):
+    '''我的消息'''
+    def get(self,request):
+        all_message = UserMessage.objects.all()
+        # 对个人信息进行分页
+        try:
+            page_num = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page_num = 1
+
+        p = Paginator(all_message, 5, request=request)
+        messages = p.page(page_num)
+        return render(request,'usercenter-message.html',{'messages':messages})
+

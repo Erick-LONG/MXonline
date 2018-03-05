@@ -291,6 +291,7 @@ class IndexView(View):
     '''慕学index'''
     def get(self,request):
         #取出轮播图
+        #print(1/0)
         all_banners = Banner.objects.all().order_by('index')
         courses = Course.objects.filter(is_banner=False)[:6]
         banner_courses = Course.objects.filter(is_banner=True)[:3]
@@ -302,8 +303,16 @@ class IndexView(View):
             'course_orgs':course_orgs,
         })
 
+
 def page_not_find(request):
     from django.shortcuts import render_to_response
     response = render_to_response('404.html',{})
     response.status_code=404
+    return response
+
+
+def page_error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html',{})
+    response.status_code=500
     return response

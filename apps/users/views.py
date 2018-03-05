@@ -301,3 +301,9 @@ class IndexView(View):
             'banner_courses':banner_courses,
             'course_orgs':course_orgs,
         })
+
+def page_not_find(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html',{})
+    response.status_code=404
+    return response

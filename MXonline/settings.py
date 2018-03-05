@@ -23,7 +23,7 @@ sys.path.insert(0,os.path.join(BASE_DIR,'apps'))#把apps加入到搜索目录之
 SECRET_KEY = '%i-t$v(%t8h1se8_o5a=aw&cbzg=+^a28m^#41&h3h3@k+gm#g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -152,4 +152,4 @@ EMAIL_FROM = 'zhangfulong1994@sina.com'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+#STATIC_ROOT = os.path.join(BASE_DIR,'static')

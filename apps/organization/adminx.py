@@ -9,9 +9,10 @@ class CityAdmin():
 
 
 class CourseOrgAdmin():
-    list_display = ['name', 'desc','add_time','click_nums','fav_nums','image','address','city']
-    search_fields = ['name', 'desc','click_nums','fav_nums','image','address','city']
-    list_filter = ['name', 'desc','add_time','click_nums','fav_nums','image','address','city']
+    list_display = ['name', 'desc','add_time','click_nums','fav_nums','image','address','city__name']
+    search_fields = ['name', 'desc','click_nums','fav_nums','image','address','city__name']
+    list_filter = ['name', 'desc','add_time','click_nums','fav_nums','image','address','city__name']
+    relfield_style = 'fk-ajax' #搜索模式，需要把搜索字段中的外键（city）改成(city__name)
 
 
 class TeacherAdmin():

@@ -31,6 +31,14 @@ class Course(models.Model):
         '''获取课程章节数'''
         return self.lesson_set.all().count()
 
+    get_zj_nums.short_description = '章节数'
+
+    def go_to(self):
+        from django.utils.safestring import mark_safe
+        return mark_safe("<a href='http://www.baidu.com'>跳转百度</a>")
+
+    go_to.short_description = '跳转'
+
     def get_learn_user(self):
         return self.usercourse_set.all()[:5]
 
@@ -39,6 +47,14 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class BannerCourse(Course):
+    class Meta:
+        verbose_name = '轮播课程'
+        verbose_name_plural = verbose_name
+        proxy = True #不生成表，但是管理同一张表
+
 
 
 class Lesson(models.Model):

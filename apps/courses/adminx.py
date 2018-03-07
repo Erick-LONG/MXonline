@@ -22,6 +22,7 @@ class CourseAdmin():
     exclude = ['fav_nums']#隐藏
     inlines = [LessonInLine,CourseResourceInLine] #直接添加章节和课程资源信息
     #refresh_times = [3,5] 每隔多长时间刷新一次
+    style_fields = {'detail':'ueditor'}
 
     def queryset(self): #筛选表分别管理
         qs = super(CourseAdmin,self).queryset()

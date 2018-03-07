@@ -43,6 +43,9 @@ urlpatterns = [
     #个人中心相关URL配置
     url(r'^users/',include('users.urls',namespace='users')),
 
+    #富文本相关URL配置
+    url(r'^ueditor/',include('DjangoUeditor.urls')),
+
     #配置静态文件的访问处理函数
     #url(r'^static/(?P<path>.*)$',serve,{'document_root':STATIC_ROOT}),
 

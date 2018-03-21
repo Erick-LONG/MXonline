@@ -69,7 +69,7 @@ class RegisterView(View):
             user_message.message = '欢迎注册慕学在线网！！'
             user_message.save()
 
-            send_register_email(user_name,'register')
+            send_register_email.delay(user_name,'register')
             return render(request, 'login.html')
         else:
             return render(request, 'register.html',{'register_form':register_form})
@@ -116,7 +116,7 @@ class ForgetPwdView(View):
         forget_form = ForgetForm(request.POST)
         if forget_form.is_valid():
             email = request.POST.get('email','')
-            send_register_email(email, 'forget')
+            send_register_email.delay(email, 'forget')
             return render(request, 'send_success.html')
         else:
             return render(request, 'forget_pwd.html', {'forget_form': forget_form})
@@ -202,7 +202,7 @@ class SendEmailCodeView(LoginRequiredMixin,View):
         if UserProfile.objects.filter(email=email):
             return HttpResponse('{"email":"邮箱已经存在"}', content_type='application/json')
 
-        send_register_email(email,'update_email')
+        send_register_email.delay(email,'update_email')
         return HttpResponse('{"status":"success"}', content_type='application/json')
 
 

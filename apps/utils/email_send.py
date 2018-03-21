@@ -1,8 +1,9 @@
-
+from MXonline.celery1 import app
 from users.models import EmailVerifyRecord
 from random import Random
 from django.core.mail import send_mail
 from MXonline.settings import EMAIL_FROM
+
 
 def random_str(randomlength=8):
     str = ''
@@ -13,7 +14,7 @@ def random_str(randomlength=8):
         str+=chars[random.randint(0,length)]
     return str
 
-
+@app.task
 def send_register_email(email,send_type="register"):
     email_record = EmailVerifyRecord()
     if send_type =='update_email':
